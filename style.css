@@ -1,0 +1,234 @@
+:root {
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --background-color: #f4f4f9;
+    --container-bg: #ffffff;
+    --cell-bg: #e9e9fd;
+    --cell-hover-bg: #d0d0f5;
+    --text-color: #333;
+    --border-color: #d1d1e0;
+    --x-color: #ff416c;
+    --o-color: #3f51b5; /* Changed O color for better contrast */
+    --winning-cell-bg: #aaffaa;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --font-family: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--text-color);
+    padding: 20px;
+}
+
+.game-container {
+    background-color: var(--container-bg);
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    text-align: center;
+    max-width: 450px; /* Max width for better control */
+    width: 90%;
+    transition: all 0.3s ease; /* Smooth transitions */
+}
+
+h1 {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 2.5em;
+}
+
+.controls {
+    margin-bottom: 25px;
+}
+
+.mode-selector {
+    display: flex;
+    flex-direction: column; /* Stack options vertically on smaller screens */
+    align-items: flex-start; /* Align radio buttons left */
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.mode-selector label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+    color: #555;
+    transition: color 0.2s ease;
+}
+.mode-selector label:hover {
+    color: var(--primary-color);
+}
+
+.mode-selector input[type="radio"] {
+    accent-color: var(--primary-color); /* Modern browser styling for radio */
+     transform: scale(1.1); /* Slightly larger radio */
+}
+
+button {
+    background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px; /* Pill shape */
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Use fr units for responsiveness */
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px; /* Slightly larger gap */
+    width: 300px;
+    height: 300px; /* Fixed aspect ratio */
+    margin: 25px auto;
+    background-color: var(--border-color); /* Background for the gaps */
+    padding: 10px; /* Padding around the cells */
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+.cell {
+    background-color: var(--cell-bg);
+    border-radius: 8px; /* Rounded cells */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3.5em; /* Larger X/O */
+    font-weight: 600; /* Bolder X/O */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none; /* Prevent text selection */
+}
+
+.cell:not(.occupied):hover {
+    background-color: var(--cell-hover-bg);
+}
+
+.cell.x {
+    color: var(--x-color);
+}
+
+.cell.o {
+    color: var(--o-color);
+}
+
+.cell.winning-cell {
+    background-color: var(--winning-cell-bg);
+    animation: pulse 0.8s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+#statusDisplay {
+    margin-top: 20px;
+    font-size: 1.1em;
+    font-weight: 400;
+    min-height: 1.5em; /* Prevent layout shifts */
+    color: #444;
+}
+
+.player-symbol-selector {
+    display: flex;
+    flex-direction: column; /* Stack options vertically */
+    align-items: center; /* Center items */
+    gap: 10px;
+    margin-top: 15px; /* Add space above */
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f0e8ff; /* Slightly different background */
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.player-symbol-selector p {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.player-symbol-selector label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+    color: #555;
+    transition: color 0.2s ease;
+}
+.player-symbol-selector label:hover {
+    color: var(--primary-color);
+}
+
+.player-symbol-selector input[type="radio"] {
+    accent-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* Ensure .hidden class is defined if not already */
+.hidden {
+    display: none !important; /* Use !important if needed to override other display properties */
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .game-container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    .board {
+        width: 240px; /* Smaller board on small screens */
+        height: 240px;
+    }
+    .cell {
+        font-size: 2.8em;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+     .mode-selector {
+        align-items: center; /* Center align on small screens */
+     }
+}

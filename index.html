@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Tic-Tac-Toe</h1>
+
+        <div class="controls">
+            <div class="mode-selector">
+                <label>
+                    <input type="radio" name="gameMode" value="pvp" checked> Player vs Player
+                </label>
+                <label>
+                    <input type="radio" name="gameMode" value="pvc"> Player vs Computer
+                </label>
+                <label>
+                    <input type="radio" name="gameMode" value="cvc"> Computer vs Computer
+                </label>
+            </div>
+
+            <!-- New Symbol Choice Section -->
+            <div id="symbolChoiceContainer" class="player-symbol-selector hidden">
+                 <p>Choose your symbol (X goes first):</p>
+                 <label>
+                     <input type="radio" name="playerSymbolChoice" value="X" checked> Play as X
+                 </label>
+                 <label>
+                     <input type="radio" name="playerSymbolChoice" value="O"> Play as O
+                 </label>
+            </div>
+            <!-- End Symbol Choice Section -->
+
+             <button id="startButton">Start Game</button>
+        </div>
+
+        <div id="gameBoard" class="board hidden">
+            <!-- Cells remain the same -->
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <p id="statusDisplay">Select a mode and start the game!</p>
+
+        <button id="restartButton" class="hidden">Restart Game</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
