@@ -2,15 +2,19 @@
     --primary-color: #6a11cb;
     --secondary-color: #2575fc;
     --background-color: #f4f4f9;
-    --container-bg: #ffffff;
-    --cell-bg: #e9e9fd;
-    --cell-hover-bg: #d0d0f5;
-    --text-color: #333;
+    --container-bg: rgba(255, 255, 255, 0.25); /* Glassmorphism: semi-transparent */
+    --container-blur: blur(18px); /* Glassmorphism blur */
+    --container-border: 1.5px solid rgba(255,255,255,0.35); /* Glassy border */
+    --cell-bg: rgba(233, 233, 253, 0.45); /* Glassy cell */
+    --cell-hover-bg: rgba(208, 208, 245, 0.55); /* Glassy hover */
+    --text-color: #fff;
     --border-color: #d1d1e0;
     --x-color: #ff416c;
-    --o-color: #3f51b5; /* Changed O color for better contrast */
-    --winning-cell-bg: #aaffaa;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --o-color: #3f51b5;
+    --winning-cell-bg: rgba(170, 255, 170, 0.5);
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    --glass-inner-shadow: 0 1.5px 8px 0 rgba(31, 38, 135, 0.10) inset;
     --font-family: 'Poppins', sans-serif;
 }
 
@@ -30,17 +34,44 @@ body {
     background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: var(--text-color);
     padding: 20px;
+    /* Glassmorphism background overlay */
+    /* Optionally add a subtle overlay for extra glass effect */
+}
+
+.glass-body {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.glass-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    /* Optionally add a subtle gradient for extra depth */
+    background-image: linear-gradient(120deg, rgba(106,17,203,0.10) 0%, rgba(37,117,252,0.10) 100%);
 }
 
 .game-container {
-    background-color: var(--container-bg);
-    padding: 30px 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px var(--shadow-color);
+    z-index: 1;
+    position: relative;
+    background: var(--container-bg);
+    backdrop-filter: var(--container-blur);
+    -webkit-backdrop-filter: var(--container-blur);
+    border-radius: 18px;
+    border: var(--container-border);
+    box-shadow: var(--glass-shadow);
+    padding: 32px 44px;
     text-align: center;
-    max-width: 450px; /* Max width for better control */
+    max-width: 450px;
     width: 90%;
-    transition: all 0.3s ease; /* Smooth transitions */
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 h1 {
@@ -51,6 +82,7 @@ h1 {
     margin-bottom: 25px;
     font-weight: 600;
     font-size: 2.5em;
+    color: #fff;
 }
 
 .controls {
@@ -59,14 +91,17 @@ h1 {
 
 .mode-selector {
     display: flex;
-    flex-direction: column; /* Stack options vertically on smaller screens */
-    align-items: flex-start; /* Align radio buttons left */
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    background: rgba(255,255,255,0.18); /* Glassy background */
+    border-radius: 10px;
+    border: 1.2px solid rgba(255,255,255,0.25);
+    box-shadow: var(--glass-inner-shadow);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .mode-selector label {
@@ -75,11 +110,11 @@ h1 {
     align-items: center;
     gap: 8px;
     font-weight: 400;
-    color: #555;
+    color: #fff;
     transition: color 0.2s ease;
 }
 .mode-selector label:hover {
-    color: var(--primary-color);
+    color: #fff;
 }
 
 .mode-selector input[type="radio"] {
@@ -88,16 +123,19 @@ h1 {
 }
 
 button {
+    background: rgba(255,255,255,0.18);
     background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    border: none;
+    border: 1.5px solid rgba(255,255,255,0.25);
     padding: 12px 25px;
-    border-radius: 25px; /* Pill shape */
+    border-radius: 25px;
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
+    box-shadow: 0 4px 24px rgba(31, 38, 135, 0.10);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 
 button:hover {
@@ -112,33 +150,50 @@ button:active {
 
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Use fr units for responsiveness */
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 10px; /* Slightly larger gap */
+    gap: 12px;
     width: 300px;
-    height: 300px; /* Fixed aspect ratio */
+    height: 300px;
+    aspect-ratio: 1 / 1; /* Always square board */
     margin: 25px auto;
-    background-color: var(--border-color); /* Background for the gaps */
-    padding: 10px; /* Padding around the cells */
-    border-radius: 10px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.18);
+    padding: 14px;
+    border-radius: 14px;
+    box-shadow: var(--glass-inner-shadow);
+    border: 1.2px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .cell {
-    background-color: var(--cell-bg);
-    border-radius: 8px; /* Rounded cells */
+    background: var(--cell-bg);
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3.5em; /* Larger X/O */
-    font-weight: 600; /* Bolder X/O */
+    font-size: 3.5em;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    user-select: none; /* Prevent text selection */
+    transition: background 0.3s, box-shadow 0.2s;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(31, 38, 135, 0.08);
+    border: 1.2px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    aspect-ratio: 1 / 1; /* Always square */
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    box-sizing: border-box;
 }
 
 .cell:not(.occupied):hover {
-    background-color: var(--cell-hover-bg);
+    background: var(--cell-hover-bg);
+    box-shadow: 0 4px 16px rgba(31, 38, 135, 0.12);
 }
 
 .cell.x {
@@ -164,26 +219,29 @@ button:active {
     font-size: 1.1em;
     font-weight: 400;
     min-height: 1.5em; /* Prevent layout shifts */
-    color: #444;
+    color: #fff;
 }
 
 .player-symbol-selector {
     display: flex;
-    flex-direction: column; /* Stack options vertically */
-    align-items: center; /* Center items */
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
-    margin-top: 15px; /* Add space above */
+    margin-top: 15px;
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f0e8ff; /* Slightly different background */
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    background: rgba(240, 232, 255, 0.35); /* Glassy background */
+    border-radius: 10px;
+    border: 1.2px solid rgba(255,255,255,0.22);
+    box-shadow: var(--glass-inner-shadow);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .player-symbol-selector p {
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--primary-color);
+    color: #fff;
 }
 
 .player-symbol-selector label {
@@ -192,11 +250,11 @@ button:active {
     align-items: center;
     gap: 8px;
     font-weight: 400;
-    color: #555;
+    color: #fff;
     transition: color 0.2s ease;
 }
 .player-symbol-selector label:hover {
-    color: var(--primary-color);
+    color: #fff;
 }
 
 .player-symbol-selector input[type="radio"] {
@@ -212,23 +270,33 @@ button:active {
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .game-container {
-        padding: 20px;
+        padding: 14px;
     }
     h1 {
         font-size: 2em;
     }
     .board {
-        width: 240px; /* Smaller board on small screens */
-        height: 240px;
+        width: 210px;
+        height: 210px;
+        aspect-ratio: 1 / 1;
+        padding: 8px;
     }
     .cell {
-        font-size: 2.8em;
+        font-size: 2.2em;
+        aspect-ratio: 1 / 1;
+        min-width: 0;
+        min-height: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        box-sizing: border-box;
     }
     button {
-        padding: 10px 20px;
+        padding: 8px 16px;
         font-size: 0.9em;
     }
-     .mode-selector {
-        align-items: center; /* Center align on small screens */
-     }
+    .mode-selector {
+        align-items: center;
+    }
 }
