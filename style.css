@@ -1,21 +1,44 @@
 :root {
+    /* Dark theme (default) */
     --primary-color: #6a11cb;
     --secondary-color: #2575fc;
+    --background-color: #0f0f23;
+    --container-bg: rgba(255, 255, 255, 0.08); /* Darker glassmorphism */
+    --container-blur: blur(20px); /* Slightly more blur for dark */
+    --container-border: 1.5px solid rgba(255,255,255,0.15); /* Subtle border */
+    --cell-bg: rgba(255, 255, 255, 0.12); /* Dark glassy cell */
+    --cell-hover-bg: rgba(255, 255, 255, 0.18); /* Dark glassy hover */
+    --text-color: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --x-color: #ff6b9d;
+    --o-color: #00e5ff;
+    --winning-cell-bg: rgba(76, 175, 80, 0.3);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    --glass-inner-shadow: 0 1.5px 8px 0 rgba(0, 0, 0, 0.2) inset;
+    --glass-bg-overlay: rgba(255,255,255,0.05);
+    --glass-bg-gradient: linear-gradient(120deg, rgba(106,17,203,0.15) 0%, rgba(37,117,252,0.15) 100%);
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Light theme */
+:root.light-theme {
     --background-color: #f4f4f9;
-    --container-bg: rgba(255, 255, 255, 0.25); /* Glassmorphism: semi-transparent */
-    --container-blur: blur(18px); /* Glassmorphism blur */
-    --container-border: 1.5px solid rgba(255,255,255,0.35); /* Glassy border */
-    --cell-bg: rgba(233, 233, 253, 0.45); /* Glassy cell */
-    --cell-hover-bg: rgba(208, 208, 245, 0.55); /* Glassy hover */
-    --text-color: #fff;
+    --container-bg: rgba(255, 255, 255, 0.25);
+    --container-blur: blur(18px);
+    --container-border: 1.5px solid rgba(255,255,255,0.35);
+    --cell-bg: rgba(233, 233, 253, 0.45);
+    --cell-hover-bg: rgba(208, 208, 245, 0.55);
+    --text-color: #333333;
     --border-color: #d1d1e0;
     --x-color: #ff416c;
-    --o-color: #3f51b5;
+    --o-color: #1565c0;
     --winning-cell-bg: rgba(170, 255, 170, 0.5);
     --shadow-color: rgba(0, 0, 0, 0.08);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
     --glass-inner-shadow: 0 1.5px 8px 0 rgba(31, 38, 135, 0.10) inset;
-    --font-family: 'Poppins', sans-serif;
+    --glass-bg-overlay: rgba(255,255,255,0.12);
+    --glass-bg-gradient: linear-gradient(120deg, rgba(106,17,203,0.10) 0%, rgba(37,117,252,0.10) 100%);
 }
 
 * {
@@ -49,11 +72,10 @@ body {
     top: 0; left: 0; right: 0; bottom: 0;
     z-index: 0;
     pointer-events: none;
-    background: rgba(255,255,255,0.12);
+    background: var(--glass-bg-overlay);
     backdrop-filter: blur(24px) saturate(1.2);
     -webkit-backdrop-filter: blur(24px) saturate(1.2);
-    /* Optionally add a subtle gradient for extra depth */
-    background-image: linear-gradient(120deg, rgba(106,17,203,0.10) 0%, rgba(37,117,252,0.10) 100%);
+    background-image: var(--glass-bg-gradient);
 }
 
 .game-container {
@@ -75,14 +97,23 @@ body {
 }
 
 h1 {
+    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 2.5em;
+    background: linear-gradient(135deg, #ff6b9d, #4fc3f7);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+}
+
+/* Light theme gradient text */
+:root.light-theme h1 {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 25px;
-    font-weight: 600;
-    font-size: 2.5em;
-    color: #fff;
+    text-shadow: none;
 }
 
 .controls {
@@ -110,11 +141,11 @@ h1 {
     align-items: center;
     gap: 8px;
     font-weight: 400;
-    color: #fff;
+    color: var(--text-color);
     transition: color 0.2s ease;
 }
 .mode-selector label:hover {
-    color: #fff;
+    color: var(--text-color);
 }
 
 .mode-selector input[type="radio"] {
@@ -146,6 +177,50 @@ button:hover {
 button:active {
     transform: translateY(0px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--container-bg);
+    border: var(--container-border);
+    border-radius: 50px;
+    padding: 12px 16px;
+    cursor: pointer;
+    backdrop-filter: var(--container-blur);
+    -webkit-backdrop-filter: var(--container-blur);
+    box-shadow: var(--glass-shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--text-color);
+    min-width: auto;
+    background-image: none;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.theme-toggle:active {
+    transform: translateY(0px);
+}
+
+.theme-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover .theme-icon {
+    transform: rotate(180deg);
 }
 
 .board {
@@ -219,7 +294,7 @@ button:active {
     font-size: 1.1em;
     font-weight: 400;
     min-height: 1.5em; /* Prevent layout shifts */
-    color: #fff;
+    color: var(--text-color);
 }
 
 .player-symbol-selector {
@@ -241,7 +316,7 @@ button:active {
 .player-symbol-selector p {
     margin-bottom: 8px;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-color);
 }
 
 .player-symbol-selector label {
@@ -250,11 +325,11 @@ button:active {
     align-items: center;
     gap: 8px;
     font-weight: 400;
-    color: #fff;
+    color: var(--text-color);
     transition: color 0.2s ease;
 }
 .player-symbol-selector label:hover {
-    color: #fff;
+    color: var(--text-color);
 }
 
 .player-symbol-selector input[type="radio"] {

@@ -340,6 +340,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add listener for mode changes to show/hide symbol choice
     modeRadios.forEach(radio => radio.addEventListener('change', handleModeChange));
 
+    // --- Theme Toggle Functionality ---
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    const themeText = themeToggle.querySelector('.theme-text');
+    const root = document.documentElement;
+
+    // Check for saved theme preference or default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    
+    const setTheme = (theme) => {
+        if (theme === 'light') {
+            root.classList.add('light-theme');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light';
+        } else {
+            root.classList.remove('light-theme');
+            themeIcon.textContent = '🌙';
+            themeText.textContent = 'Dark';
+        }
+        localStorage.setItem('theme', theme);
+    };
+
+    const toggleTheme = () => {
+        const currentTheme = root.classList.contains('light-theme') ? 'light' : 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    };
+
+    // Set initial theme
+    setTheme(savedTheme);
+
+    // Add event listener for theme toggle
+    themeToggle.addEventListener('click', toggleTheme);
+
     // --- Initial Setup ---
     handleModeChange(); // Call once on load to set initial visibility
     displayMessage("Select a mode and start the game!");
